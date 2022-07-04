@@ -1,0 +1,34 @@
+{form name="mondialrelayhomedelivery.settings_form"}
+    <form action="{url path="/admin/module/MondialRelayHomeDelivery/settings/save"}" {form_enctype form=$form} method="post" data-ajax-target="#general-form-container">
+        {include file = "includes/inner-form-toolbar.html"
+            hide_flags = true
+            page_url   = "{url path='/admin/module/MondialRelayHomeDelivery'}"
+            close_url  = "{url path='/admin/modules'}"
+            hide_save_and_close_button = true
+        }
+        
+        {form_hidden_fields form=$form}
+    
+        {if $form_error|default:null}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+    
+        <div class="row">
+            <div class="col-md-6">
+                {render_form_field field="code_enseigne" value={module_config module="MondialRelayHomeDelivery" key='code_enseigne' locale="en_US"}}
+                {render_form_field field="private_key" value={module_config module="MondialRelayHomeDelivery" key='private_key' locale="en_US"}}
+                {render_form_field field="webservice_url" value={module_config module="MondialRelayHomeDelivery" key='webservice_url' locale="en_US"}}
+            </div>
+            <div class="col-md-6">
+                {*
+                {render_form_field field="allow_insurance" value={module_config module="MondialRelayHomeDelivery" key='allow_insurance' locale="en_US"}}
+                *}
+                
+                <div class="text-center" style="margin-top: 40px; padding: 0 20%;">
+                    <p><a href="https://www.younivers.fr"><img src="{image file="mondialrelayhomedelivery/assets/img/younivers.png" source="MondialRelayHomeDelivery"}"></a></p>
+                    <p>{intl l='Development of this module is sponsored by <a href="https://www.younivers.fr">you\'Nivers</a> web and communication agency in Roanne.' d="mondialrelayhomedelivery.bo.default"}</p>
+                </div>
+            </div>
+        </div>
+    </form>
+{/form}
+
+{include file="mondialrelayhomedelivery/includes/error-dialog.html"}

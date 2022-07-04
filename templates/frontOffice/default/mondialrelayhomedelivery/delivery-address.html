@@ -1,0 +1,18 @@
+{strip}
+    {loop type="module" name="is_mondial_relay" id={order attr="delivery_module"} code="MondialRelayHomeDelivery"}
+        {loop type="mondialrelayhomedelivery.selected-pickup-point" name="avec-pickup"}
+            <div class="panel panel-default col-sm-6">
+                <div class="panel-heading">{intl l="Pickup location address" d="mondialrelayhomedelivery.fo.default"}</div>
+                <div class="panel-body">
+                    <span class="fn">{intl l="Pickup location #%number" number=$ID d="mondialrelayhomedelivery.fo.default"}</span>
+                    <span class="org">{$NAME}</span>
+                    <address class="adr">
+                        <span class="street-address">{$ADDRESS}</span><br>
+                        <span class="postal-code">{$ZIPCODE} </span>
+                        <span class="locality">{$CITY} - {$COUNTRY}</span>
+                    </address>
+                </div>
+            </div>
+        {/loop}
+    {/loop}
+{/strip}

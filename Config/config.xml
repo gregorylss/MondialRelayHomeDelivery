@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <loop name="mondialrelayhomedelivery.prices" class="MondialRelayHomeDelivery\Loop\Prices" />
+        <loop name="mondialrelayhomedelivery.area-attributes" class="MondialRelayHomeDelivery\Loop\AreaAttributes" />
+        <loop name="mondialrelayhomedelivery.insurances" class="MondialRelayHomeDelivery\Loop\Insurances" />
+
+        <loop name="mondialrelayhomedelivery.delivery-price" class="MondialRelayHomeDelivery\Loop\DeliveryPrice" />
+        <loop name="mondialrelayhomedelivery.pickup-points" class="MondialRelayHomeDelivery\Loop\PickupPoints" />
+    </loops>
+
+    <forms>
+        <form name="mondialrelayhomedelivery.settings_form" class="MondialRelayHomeDelivery\Form\SettingsForm" />
+
+        <form name="mondialrelayhomedelivery.area_attributes_update_form" class="MondialRelayHomeDelivery\Form\PriceAttributesUpdateForm" />
+
+        <form name="mondialrelayhomedelivery.price_form" class="MondialRelayHomeDelivery\Form\PriceCreateForm" />
+        <form name="mondialrelayhomedelivery.prices_update_form" class="MondialRelayHomeDelivery\Form\PricesUpdateForm" />
+
+        <form name="mondialrelayhomedelivery.insurances_update_form" class="MondialRelayHomeDelivery\Form\InsurancesUpdateForm" />
+        <form name="mondialrelayhomedelivery.insurance_create_form" class="MondialRelayHomeDelivery\Form\InsuranceCreateForm" />
+    </forms>
+
+    <hooks>
+        <hook id="mondialrelayhomedelivery.admin.hookmanager" class="MondialRelayHomeDelivery\Hook\AdminHookManager">
+            <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfigure" />
+            <tag name="hook.event_listener" event="module.config-js" type="back" method="onModuleConfigureJs" />
+            <tag name="hook.event_listener" event="main.top-menu-tools" type="back" method="onMainTopMenuTools" />
+        </hook>
+
+        <hook id="mondialrelayhomedelivery.email.hookmanager" class="MondialRelayHomeDelivery\Hook\EmailHookManager">
+            <tag name="hook.event_listener" event="email-html.order-confirmation.delivery-address" type="email" method="onDeliveryAddressHtml"/>
+            <tag name="hook.event_listener" event="email-txt.order-confirmation.delivery-address" type="email" method="onDeliveryAddressText"/>
+            <tag name="hook.event_listener" event="email-html.order-notification.delivery-address" type="email" method="onDeliveryAddressHtml"/>
+            <tag name="hook.event_listener" event="email-txt.order-notification.delivery-address" type="email" method="onDeliveryAddressText"/>
+
+            <tag name="hook.event_listener" event="email-html.order-confirmation.after-products" type="email" method="onAfterProductsHtml"/>
+            <tag name="hook.event_listener" event="email-txt.order-confirmation.after-products" type="email" method="onAfterProductsText"/>
+            <tag name="hook.event_listener" event="email-html.order-notification.after-products" type="email" method="onAfterProductsHtml"/>
+            <tag name="hook.event_listener" event="email-txt.order-notification.after-products" type="email" method="onAfterProductsText"/>
+        </hook>
+
+        <hook id="mondialrelayhomedelivery.pdf.hookmanager" class="MondialRelayHomeDelivery\Hook\PdfHookManager">
+            <tag name="hook.event_listener" event="delivery.delivery-address" type="pdf" method="onDeliveryAddress"/>
+            <tag name="hook.event_listener" event="invoice.delivery-address" type="pdf" method="onDeliveryAddress"/>
+
+            <tag name="hook.event_listener" event="delivery.after-delivery-module" type="pdf" method="onAfterDeliveryModule"/>
+            <tag name="hook.event_listener" event="invoice.after-delivery-module" type="pdf" method="onAfterDeliveryModule"/>
+
+        </hook>
+    </hooks>
+</config>
