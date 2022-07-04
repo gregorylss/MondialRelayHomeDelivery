@@ -218,7 +218,7 @@ class MondialRelayHomeDelivery extends AbstractDeliveryModule
      */
     public function isValidDelivery(Country $country)
     {
-        return null !== $this->getAreaForCountry($country);
+        return !empty($this->getAreaForCountry($country)->getData());
     }
 
     /**
@@ -232,8 +232,6 @@ class MondialRelayHomeDelivery extends AbstractDeliveryModule
     public function getPostage(Country $country)
     {
         $request = $this->getRequest();
-
-        $orderPostage = 0;
 
         $cartWeight = $request->getSession()->getSessionCart($this->getDispatcher())->getWeight();
 
