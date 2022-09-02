@@ -83,7 +83,7 @@ class PriceController extends BaseAdminController
 
             $data = $viewForm->getData();
 
-            MondialRelayHomeDeliveryPriceQuery::create()->filterByMaxWeight($data['max_weight'])->delete();
+            MondialRelayHomeDeliveryPriceQuery::create()->filterByAreaId($areaId)->filterByMaxWeight($data['max_weight'])->delete();
 
             (new MondialRelayHomeDeliveryPrice())
                 ->setAreaId($areaId)
