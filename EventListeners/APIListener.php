@@ -47,6 +47,8 @@ class APIListener implements EventSubscriberInterface
         $module = new MondialRelayHomeDelivery();
         $country = $deliveryModuleOptionEvent->getCountry();
 
+        $locale = $this->requestStack->getCurrentRequest()->getSession()->getLang()->getLocale();
+
         if (empty($countryAreas = $module->getAreaForCountry($country))) {
             throw new DeliveryException(Translator::getInstance()->trans("Your delivery country is not covered by Mondial Relay"));
         }
@@ -62,16 +64,16 @@ class APIListener implements EventSubscriberInterface
             $areaConfiguration = MondialRelayHomeDeliveryZoneConfigurationQuery::create()->filterByAreaId($area->getId())->findOne();
 
             $date = new \DateTime();
-            $minimumDeliveryDate = $date->add(new \DateInterval('P'.$areaConfiguration->getDeliveryTime().'D'));
+            $minimumDeliveryDate = $areaConfiguration ? $date->add(new \DateInterval('P'.$areaConfiguration->getDeliveryTime().'D')) : null;
 
             /** @var DeliveryModuleOption $deliveryModuleOption */
             $deliveryModuleOption = ($this->container->get('open_api.model.factory'))->buildModel('DeliveryModuleOption');
             $deliveryModuleOption
                 ->setCode('MondialRelayHomeDelivery')
                 ->setValid($isValid)
-                ->setTitle('Mondial Relay Home Delivery')
+                ->setTitle($deliveryModuleOptionEvent->getModule()->setLocale($locale)->getTitle())
                 ->setImage('')
-                ->setMinimumDeliveryDate($minimumDeliveryDate->format('d/m/Y'))
+                ->setMinimumDeliveryDate($minimumDeliveryDate ? $minimumDeliveryDate->format('d/m/Y') : null)
                 ->setMaximumDeliveryDate(null)
                 ->setPostage(($orderPostage) ? $orderPostage->getAmount() : 0)
                 ->setPostageTax(($orderPostage) ? $orderPostage->getAmountTax() : 0)
