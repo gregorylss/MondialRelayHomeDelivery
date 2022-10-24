@@ -31,5 +31,11 @@
         </foreign-key>
     </table>
 
+    <table name="mondial_relay_home_delivery_freeshipping" namespace="MondialRelayHomeDelivery\Model">
+        <column name="id" primaryKey="true" required="true" type="INTEGER" autoIncrement="true"  />
+        <column name="active" default="0" type="BOOLEAN" />
+        <column name="freeshipping_from" size="18" scale="2" type="DECIMAL" />
+    </table>
+
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

@@ -1,32 +1,33 @@
-{$current_tab = {$smarty.get.tab|default:'general'}}
+{$current_tab = {$smarty.get.tab|default:'price_slices'}}
 <div class="col-md-12 general-block-decorator">
     <div class="row">
         <div class="col-md-12 title">
             {intl l="Mondial Relay delivery configuration" d='mondialrelayhomedelivery.bo.default'}
         </div>
     </div>
-    
+
     <ul class="nav nav-tabs clearfix">
+        <li {if $current_tab|default:null == 'price_slices'}class="active"{/if}><a href="#price_slices" data-tab-name="price_slices" data-toggle="tab">{intl l="Price slices (Dom)" d='mondialrelayhomedelivery.bo.default'}</a></li>
         <li {if $current_tab|default:null == 'general'}class="active"{/if}><a href="#general" data-tab-name="general" data-toggle="tab">{intl l="Configuration" d='mondialrelayhomedelivery.bo.default'}</a></li>
         <li {if $current_tab|default:null == 'prices'}class="active"{/if}><a href="#prices" data-tab-name="prices" data-toggle="tab">{intl l="Prices" d='mondialrelayhomedelivery.bo.default'}</a></li>
         {*
         <li {if $current_tab == 'insurances'}class="active"{/if}><a href="#insurances" data-tab-name="insurances" data-toggle="tab">{intl l="Insurances" d='mondialrelayhomedelivery.bo.default'}</a></li>
         *}
     </ul>
-    
+
     <div class="tab-content">
         <div class="tab-pane fade {if $current_tab|default:null == 'general'}active in{/if}" id="general">
             <div class="form-container" id="general-form-container">
                 {include file="mondialrelayhomedelivery/ajax/general.html"}
             </div>
         </div>
-        
+
         <div class="tab-pane fade {if $current_tab|default:null == 'prices'}active in{/if}" id="prices">
             <div class="form-container" id="prices-form-container">
                 {include file="mondialrelayhomedelivery/ajax/prices.html" module_id=$module_id}
             </div>
         </div>
-        
+
         {*
         <div class="tab-pane fade {if $current_tab == 'insurances'}active in{/if}" id="insurances">
             <div class="form-container" id="insurances-form-container">
@@ -34,5 +35,49 @@
             </div>
         </div>
         *}
+
+        <div id="price_slices" class="tab-pane fade {if $current_tab == 'price_slices'}active in{/if}">
+            <br>
+            <div class="title">
+                {intl l="Price slices for domicile delivery" d='mondialrelayhomedelivery.bo.default'}
+            </div>
+
+            <!-- ********* FREE SHIPPING BUTTON ********* -->
+
+            <div class="row">
+                <!-- checkbox free shipping -->
+                {assign var="isMondialRelayHomeDeliveryFreeshipping" value=0}
+                {form  name="mondialrelayhomedelivery_freeshipping_form"}
+                <form action='{url path="/admin/module/MondialRelayHomeDelivery/freeshipping"}' method="post" id="freeshippingform">
+                    <div class="col-md-4">
+                        {form_hidden_fields form=$form}
+                        {form_field form=$form field="freeshipping"}
+                        <label>
+                            {intl l="Activate total free shipping " d="mondialrelayhomedelivery.bo.default"}
+                        </label>
+                        <div class="switch-small freeshipping-activation-ColissimoHomeDelivery" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok-circle'></i>" data-off-label="<i class='glyphicon glyphicon-remove-circle'></i>">
+                            {loop type="mondialrelayhomedelivery.freeshipping" name="freeshipping_mondialrelayhomedelivery"}
+                            <input type="checkbox" name="{$name}" value="true" {if $FREESHIPPING_ACTIVE}checked{assign var="isMondialRelayHomeDeliveryFreeshipping" value=1}{/if} />
+                            {/loop}
+                        </div>
+                        {/form_field}
+                    </div>
+                    <div class="col-md-6" id="freeshipping-from">
+                        <div class="input-group">
+                            {form_field form=$form field="freeshipping_from"}
+                            {loop type="mondialrelayhomedelivery.freeshipping" name="freeshipping_mondialrelayhomedelivery"}
+                            <span class="input-group-addon {if $FREESHIPPING_FROM}alert-success{/if}">{intl l="Or activate free shipping from (€) :" d="mondialrelayhomedelivery.bo.default"}</span>
+                            <input type="number" name="{$name}"  class="form-control" value="{$value}" step="0.01">
+                            {/loop}
+                            {/form_field}
+                            <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="submit">{intl l="Save"}</button>
+                                                </span>
+                        </div>
+                    </div>
+                </form>
+                {/form}
+            </div>
+        </div>
     </div>
 </div>
