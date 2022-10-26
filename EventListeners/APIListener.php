@@ -43,7 +43,6 @@ class APIListener implements EventSubscriberInterface
 
         $isValid = true;
 
-
         $module = new MondialRelayHomeDelivery();
         $country = $deliveryModuleOptionEvent->getCountry();
 
@@ -54,7 +53,11 @@ class APIListener implements EventSubscriberInterface
         }
 
 
-        /** @var Area $countryArea */
+        /** @var Area $countryArea
+         *  @var int $minimumShippingFree
+         */
+        $minimumShippingFree = null;
+        $bestPostage = null;
         foreach ($countryAreas as $area) {
             $orderPostage = $module->getMinPostage(
                 $country,
@@ -66,24 +69,29 @@ class APIListener implements EventSubscriberInterface
             $date = new \DateTime();
             $minimumDeliveryDate = $areaConfiguration ? $date->add(new \DateInterval('P'.$areaConfiguration->getDeliveryTime().'D')) : null;
 
-            /** @var DeliveryModuleOption $deliveryModuleOption */
-            $deliveryModuleOption = ($this->container->get('open_api.model.factory'))->buildModel('DeliveryModuleOption');
-            $deliveryModuleOption
-                ->setCode('MondialRelayHomeDelivery')
-                ->setValid($isValid)
-                ->setTitle($deliveryModuleOptionEvent->getModule()->setLocale($locale)->getTitle())
-                ->setImage('')
-                ->setMinimumDeliveryDate($minimumDeliveryDate ? $minimumDeliveryDate->format('d/m/Y') : null)
-                ->setMaximumDeliveryDate(null)
-                ->setPostage(($orderPostage) ? $orderPostage->getAmount() : 0)
-                ->setPostageTax(($orderPostage) ? $orderPostage->getAmountTax() : 0)
-                ->setPostageUntaxed(($orderPostage) ? $orderPostage->getAmount() - $orderPostage->getAmountTax() : 0)
-            ;
-
-            $deliveryModuleOptionEvent->appendDeliveryModuleOptions($deliveryModuleOption);
+            if ($minimumShippingFree == null){
+                $minimumShippingFree = $orderPostage->getAmount();
+                $bestPostage = $orderPostage;
+            }
+            if ($minimumShippingFree > $orderPostage->getAmount()){
+                $bestPostage = $orderPostage;
+            }
         }
+        /** @var DeliveryModuleOption $deliveryModuleOption */
 
-
+        $deliveryModuleOption = ($this->container->get('open_api.model.factory'))->buildModel('DeliveryModuleOption');
+        $deliveryModuleOption
+            ->setCode('MondialRelayHomeDelivery')
+            ->setValid($isValid)
+            ->setTitle($deliveryModuleOptionEvent->getModule()->setLocale($locale)->getTitle())
+            ->setImage('')
+            ->setMinimumDeliveryDate($minimumDeliveryDate ? $minimumDeliveryDate->format('d/m/Y') : null)
+            ->setMaximumDeliveryDate(null)
+            ->setPostage(($bestPostage) ? $bestPostage->getAmount() : 0)
+            ->setPostageTax(($bestPostage) ? $bestPostage->getAmountTax() : 0)
+            ->setPostageUntaxed(($bestPostage) ? $bestPostage->getAmount() - $bestPostage->getAmountTax() : 0)
+        ;
+        $deliveryModuleOptionEvent->appendDeliveryModuleOptions($deliveryModuleOption);
     }
 
     public static function getSubscribedEvents()

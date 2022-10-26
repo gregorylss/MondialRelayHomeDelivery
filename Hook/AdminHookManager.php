@@ -26,7 +26,7 @@ class AdminHookManager extends BaseHook
             'allow_relay_delivery' =>  MondialRelayHomeDelivery::getConfigValue(MondialRelayHomeDelivery::ALLOW_RELAY_DELIVERY),
             'allow_home_delivery' =>  MondialRelayHomeDelivery::getConfigValue(MondialRelayHomeDelivery::ALLOW_HOME_DELIVERY),
             'allow_insurance' =>  MondialRelayHomeDelivery::getConfigValue(MondialRelayHomeDelivery::ALLOW_INSURANCE),
-
+            "mondial_relay_home_delivery_free_shipping_active" => MondialRelayHomeDelivery::getConfigValue("mondial_relay_home_delivery_free_shipping_active"),
             'module_id' =>  MondialRelayHomeDelivery::getModuleId()
         ];
 

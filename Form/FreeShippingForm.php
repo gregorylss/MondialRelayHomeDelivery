@@ -60,7 +60,7 @@ class FreeShippingForm extends BaseForm
                 'freeshipping',
                 CheckboxType::class,
                 [
-                    'label'     => Translator::getInstance()->trans("Activate free shipping: ", [], MondialRelayHomeDelivery::DOMAIN_NAME)
+                    'label'     => Translator::getInstance()->trans("Activate free shipping: ", [], MondialRelayHomeDelivery::DOMAIN_NAME),
                 ]
             )
             ->add(
@@ -69,7 +69,7 @@ class FreeShippingForm extends BaseForm
                 [
                     'required'  => false,
                     'label'     => Translator::getInstance()->trans("Free shipping from: ", [], MondialRelayHomeDelivery::DOMAIN_NAME),
-                    'data'      => MondialRelayHomeDeliveryFreeshippingQuery::create()->findOneById(1)->getFreeshippingFrom(),
+                    'data'      => MondialRelayHomeDelivery::getConfigValue("mondial_relay_home_delivery_free_shipping_from"),
                     'scale'     => 2,
                 ]
             )

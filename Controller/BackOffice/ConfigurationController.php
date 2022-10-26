@@ -52,7 +52,9 @@ class ConfigurationController extends BaseAdminController
 
             return $this->render(
                 "module-configure",
-                ["module_code" => MondialRelayHomeDelivery::getModuleCode()]
+                [
+                    "module_code" => MondialRelayHomeDelivery::getModuleCode(),
+                ]
             );
         }
 

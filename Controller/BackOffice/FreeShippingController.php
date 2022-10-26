@@ -26,6 +26,7 @@ namespace MondialRelayHomeDelivery\Controller\BackOffice;
 use MondialRelayHomeDelivery\Form\FreeShippingForm;
 use MondialRelayHomeDelivery\Model\MondialRelayHomeDeliveryFreeshipping;
 use MondialRelayHomeDelivery\Model\MondialRelayHomeDeliveryFreeshippingQuery;
+use MondialRelayHomeDelivery\MondialRelayHomeDelivery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Thelia\Controller\Admin\BaseAdminController;
@@ -52,15 +53,9 @@ class FreeShippingController extends BaseAdminController
             $freeshipping = $vform->get('freeshipping')->getData();
             $freeshippingFrom = $vform->get('freeshipping_from')->getData();
 
-            if (null === $isFreeShippingActive = MondialRelayHomeDeliveryFreeshippingQuery::create()->findOneById(1)){
-                $isFreeShippingActive = new MondialRelayHomeDeliveryFreeshipping();
-            }
 
-            $isFreeShippingActive
-                ->setActive($freeshipping)
-                ->setFreeshippingFrom($freeshippingFrom)
-            ;
-            $isFreeShippingActive->save();
+            MondialRelayHomeDelivery::setConfigValue("mondial_relay_home_delivery_free_shipping_active", $freeshipping );
+            MondialRelayHomeDelivery::setConfigValue("mondial_relay_home_delivery_free_shipping_from", $freeshippingFrom);
 
             $response = $this->generateRedirectFromRoute(
                 'admin.module.configure',
@@ -70,7 +65,7 @@ class FreeShippingController extends BaseAdminController
                     'module_code'=> 'MondialRelayHomeDelivery',
                     '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction',
                     'price_error_id' => null,
-                    'price_error' => null
+                    'price_error' => null,
                 )
             );
         } catch (\Exception $e) {
