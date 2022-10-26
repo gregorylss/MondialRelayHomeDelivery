@@ -297,19 +297,8 @@ class MondialRelayHomeDelivery extends AbstractDeliveryModule
      */
     public static function getPostageAmount($areaId, $weight, $cartAmount = 0)
     {
-        /* Check if freeshipping is activated */
-        try {
-            $freeshipping = self::getConfigValue("mondial_relay_home_delivery_free_shipping_active");
-        } catch (\Exception $exception) {
-            $freeshipping = false;
-        }
-
-        /* Get the total cart price needed to have a free shipping for all areas, if it exists */
-        try {
-            $freeshippingFrom = self::getConfigValue("mondial_relay_home_delivery_free_shipping_from");
-        } catch (\Exception $exception) {
-            $freeshippingFrom = false;
-        }
+        $freeshipping = self::getConfigValue("mondial_relay_home_delivery_free_shipping_active");
+        $freeshippingFrom = self::getConfigValue("mondial_relay_home_delivery_free_shipping_from");
 
         /** Set the initial postage price as 0 */
         $postage = 0;
@@ -367,7 +356,7 @@ class MondialRelayHomeDelivery extends AbstractDeliveryModule
                     }
                 }
             } catch (\Exception $ex) {
-                throw new DeliveryException($ex->getMessage()); //todo make a better catch
+                throw new DeliveryException($ex->getMessage());
             }
         }
 
