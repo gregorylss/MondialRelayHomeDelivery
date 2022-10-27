@@ -62,7 +62,8 @@ class APIListener implements EventSubscriberInterface
             $orderPostage = $module->getMinPostage(
                 $country,
                 $this->requestStack->getCurrentRequest()->getSession()->getLang()->getLocale(),
-                $deliveryModuleOptionEvent->getCart()->getWeight()
+                $deliveryModuleOptionEvent->getCart()->getWeight(),
+                $deliveryModuleOptionEvent->getCart()->getTaxedAmount($country)
             );
             $areaConfiguration = MondialRelayHomeDeliveryZoneConfigurationQuery::create()->filterByAreaId($area->getId())->findOne();
 
