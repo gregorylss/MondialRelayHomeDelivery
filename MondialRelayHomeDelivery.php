@@ -3,6 +3,7 @@
 namespace MondialRelayHomeDelivery;
 
 
+use MondialRelayHomeDelivery\Model\MondialRelayHomeDeliveryAreaFreeshippingQuery;
 use MondialRelayHomeDelivery\Model\MondialRelayHomeDeliveryFreeshippingQuery;
 use MondialRelayHomeDelivery\Model\MondialRelayHomeDeliveryInsurance;
 use MondialRelayHomeDelivery\Model\MondialRelayHomeDeliveryPrice;
@@ -309,6 +310,23 @@ class MondialRelayHomeDelivery extends AbstractDeliveryModule
             if (null !== $freeshippingFrom && $freeshippingFrom <= $cartAmount) {
                 return 0;
             }
+
+            $areaFreeshipping = MondialRelayHomeDeliveryAreaFreeshippingQuery::create()
+                ->filterByAreaId($areaId)
+                ->findOne()
+            ;
+
+            if ($areaFreeshipping) {
+                $areaFreeshipping = $areaFreeshipping->getCartAmount();
+            }
+
+            /* If the cart price is superior to the minimum price for free shipping in the area of the order,
+             * return the postage as free.
+             */
+            if (null !== $areaFreeshipping && $areaFreeshipping <= $cartAmount) {
+                return 0;
+            }
+
 
             /** Search the list of prices and order it in ascending order */
             $areaPrices = MondialRelayHomeDeliveryPriceQuery::create()

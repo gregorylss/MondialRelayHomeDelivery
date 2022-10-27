@@ -12,6 +12,8 @@
         <loop name="mondialrelayhomedelivery.delivery-price" class="MondialRelayHomeDelivery\Loop\DeliveryPrice" />
         <loop name="mondialrelayhomedelivery.pickup-points" class="MondialRelayHomeDelivery\Loop\PickupPoints" />
         <loop name="mondialrelayhomedelivery.freeshipping" class="MondialRelayHomeDelivery\Loop\FreeShipping"/>
+        <loop name="mondialrelayhomedelivery.area.freeshipping" class="MondialRelayHomeDelivery\Loop\AreaFreeShipping" />
+
     </loops>
 
     <forms>

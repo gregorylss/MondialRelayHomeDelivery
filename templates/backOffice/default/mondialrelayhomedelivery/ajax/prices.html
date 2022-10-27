@@ -11,141 +11,171 @@
     
         <div class="panel-body">
             <div class="row">
-            <div class="col-sm-8">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        {intl l='Delivery prices' d='mondialrelayhomedelivery.bo.default'}
-                    </div>
-                    
-                    <div class="panel-body">
-                        {form name="mondialrelayhomedelivery.prices_update_form"}
-                        <form action="{url path="/admin/module/MondialRelayHomeDelivery/prices/save/$ID/$module_id"}" data-ajax-target="#prices-form-container" {form_enctype form=$form} method="post">
-                            {form_hidden_fields form=$form}
-                            
-                            <table class="table table-condensed table-striped">
-                                <thead>
-                                <tr>
-                                    <th>{intl l='Cart weight up to...' d='mondialrelayhomedelivery.bo.default'}</th>
-                                    <th>{intl l='Price with tax' d='mondialrelayhomedelivery.bo.default'}</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                                </thead>
-                                
-                                <tbody>
-                                {loop type="mondialrelayhomedelivery.prices" name="prices" area_id=$ID}
-                                <tr>
-                                    <td>
-                                        {form_field field="max_weight" value_key=$ID}
-                                            <div class="input-group">
-                                                <input type="text" {form_field_attributes field="max_weight" value_key=$ID value=$MAX_WEIGHT|string_format:"%.2f"}>
-                                                <span class="input-group-addon">{intl l='kg' d='mondialrelayhomedelivery.bo.default'}</span>
-                                            </div>
-                                        {/form_field}
-                                    </td>
-                                    
-                                    <td>
-                                        {form_field field="price" value_key=$ID}
-                                            <div class="input-group">
-                                                <input type="text" {form_field_attributes field="price" value_key=$ID value=$PRICE|string_format:"%.2f"}>
-                                                <span class="input-group-addon">{currency attr="symbol"}</span>
-                                            </div>
-                                        {/form_field}
-                                    </td>
-                                    
-                                    <td class="text-nowrap">
-                                        <a href="{url path="/admin/module/MondialRelayHomeDelivery/prices/delete/$ID/$module_id"}" data-ajax-target="#prices-form-container" class="btn btn-danger" title="{intl l='Delete this price' d='mondialrelayhomedelivery.bo.default'}"><i class="glyphicon glyphicon-remove"></i></a>
-                                    </td>
-                                </tr>
-                                {/loop}
-                                </tbody>
-                                
-                                <tfoot>
+                <div class="col-sm-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {intl l='Delivery prices' d='mondialrelayhomedelivery.bo.default'}
+                        </div>
+
+                        <div class="panel-body">
+                            {form name="mondialrelayhomedelivery.prices_update_form"}
+                            <form action="{url path="/admin/module/MondialRelayHomeDelivery/prices/save/$ID/$module_id"}" data-ajax-target="#prices-form-container" {form_enctype form=$form} method="post">
+                                {form_hidden_fields form=$form}
+
+                                <table class="table table-condensed table-striped">
+                                    <thead>
                                     <tr>
-                                        <td colspan="99" class="text-right">
-                                            <button class="btn btn-primary" type="submit">
-                                                <i class="glyphicon glyphicon-ok"></i>
-                                                {intl l='Save changes' d='mondialrelayhomedelivery.bo.default'}
-                                            </button>
+                                        <th>{intl l='Cart weight up to...' d='mondialrelayhomedelivery.bo.default'}</th>
+                                        <th>{intl l='Price with tax' d='mondialrelayhomedelivery.bo.default'}</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {loop type="mondialrelayhomedelivery.prices" name="prices" area_id=$ID}
+                                    <tr>
+                                        <td>
+                                            {form_field field="max_weight" value_key=$ID}
+                                                <div class="input-group">
+                                                    <input type="text" {form_field_attributes field="max_weight" value_key=$ID value=$MAX_WEIGHT|string_format:"%.2f"}>
+                                                    <span class="input-group-addon">{intl l='kg' d='mondialrelayhomedelivery.bo.default'}</span>
+                                                </div>
+                                            {/form_field}
+                                        </td>
+
+                                        <td>
+                                            {form_field field="price" value_key=$ID}
+                                                <div class="input-group">
+                                                    <input type="text" {form_field_attributes field="price" value_key=$ID value=$PRICE|string_format:"%.2f"}>
+                                                    <span class="input-group-addon">{currency attr="symbol"}</span>
+                                                </div>
+                                            {/form_field}
+                                        </td>
+
+                                        <td class="text-nowrap">
+                                            <a href="{url path="/admin/module/MondialRelayHomeDelivery/prices/delete/$ID/$module_id"}" data-ajax-target="#prices-form-container" class="btn btn-danger" title="{intl l='Delete this price' d='mondialrelayhomedelivery.bo.default'}"><i class="glyphicon glyphicon-remove"></i></a>
                                         </td>
                                     </tr>
-                                </tfoot>
-                            </table>
-                        </form>
-                        {/form}
-                
-                        {form name="mondialrelayhomedelivery.price_form"}
-                        <form action="{url path="/admin/module/MondialRelayHomeDelivery/prices/create/$ID/$module_id"}" data-ajax-target="#prices-form-container" {form_enctype form=$form} method="post">
-                            
-                            {form_hidden_fields form=$form}
-                            
-                            <table class="table table-condensed table-striped">
-                                <tbody>
-                                <tr>
-                                    <th colspan="99">{intl l='Add a new price' d='mondialrelayhomedelivery.bo.default'}</th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        {form_field field="max_weight"}
-                                            <div class="input-group">
-                                                <input type="text" {form_field_attributes field="max_weight"}>
-                                                <span class="input-group-addon">{intl l='kg' d='mondialrelayhomedelivery.bo.default'}</span>
-                                            </div>
-                                        {/form_field}
-                                    </td>
-                                    
-                                    <td>
-                                        {form_field field="price"}
-                                            <div class="input-group">
-                                                <input type="text" {form_field_attributes field="price"}>
-                                                <span class="input-group-addon">{currency attr="symbol"}</span>
-                                            </div>
-                                        {/form_field}
-                                    </td>
-                                    
-                                    <td>
-                                        <button class="btn btn-primary" title="{intl l='Add this price' d='mondialrelayhomedelivery.bo.default'}"><i class="glyphicon glyphicon-plus"></i></button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                        {/form}
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-sm-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        {intl l='Area properties' d='mondialrelayhomedelivery.bo.default'}
-                    </div>
-    
-                    <div class="panel-body">
-                        {form name="mondialrelayhomedelivery.area_attributes_update_form"}
-                            <form action="{url path="/admin/module/MondialRelayHomeDelivery/area-attributes/save/$ID/$module_id"}" data-ajax-target="#prices-form-container" {form_enctype form=$form} method="post">
-                                {form_hidden_fields form=$form}
-                        
-                                {loop type="mondialrelayhomedelivery.area-attributes" name="area-attributes" area_id=$ID}
-                                    {custom_render_form_field field="delivery_time"}
-                                        <div class="input-group">
-                                            <input type="text" {form_field_attributes field="delivery_time" value=$DELIVERY_TIME}>
-                                            <span class="input-group-addon">{intl l='days' d='mondialrelayhomedelivery.bo.default'}</span>
-                                        </div>
-                                    {/custom_render_form_field}
-                            
-                                    <button type="submit" class="btn btn-primary" title="{intl l='Save changes' d='mondialrelayhomedelivery.bo.default'}"><i class="glyphicon glyphicon-ok"></i> {intl l="Save" d='mondialrelayhomedelivery.bo.default'}</button>
-                                {/loop}
+                                    {/loop}
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="99" class="text-right">
+                                                <button class="btn btn-primary" type="submit">
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                    {intl l='Save changes' d='mondialrelayhomedelivery.bo.default'}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </form>
-                        {/form}
+                            {/form}
+
+                            {form name="mondialrelayhomedelivery.price_form"}
+                            <form action="{url path="/admin/module/MondialRelayHomeDelivery/prices/create/$ID/$module_id"}" data-ajax-target="#prices-form-container" {form_enctype form=$form} method="post">
+
+                                {form_hidden_fields form=$form}
+
+                                <table class="table table-condensed table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <th colspan="99">{intl l='Add a new price' d='mondialrelayhomedelivery.bo.default'}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {form_field field="max_weight"}
+                                                <div class="input-group">
+                                                    <input type="text" {form_field_attributes field="max_weight"}>
+                                                    <span class="input-group-addon">{intl l='kg' d='mondialrelayhomedelivery.bo.default'}</span>
+                                                </div>
+                                            {/form_field}
+                                        </td>
+
+                                        <td>
+                                            {form_field field="price"}
+                                                <div class="input-group">
+                                                    <input type="text" {form_field_attributes field="price"}>
+                                                    <span class="input-group-addon">{currency attr="symbol"}</span>
+                                                </div>
+                                            {/form_field}
+                                        </td>
+
+                                        <td>
+                                            <button class="btn btn-primary" title="{intl l='Add this price' d='mondialrelayhomedelivery.bo.default'}"><i class="glyphicon glyphicon-plus"></i></button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                            {/form}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {intl l='Area properties' d='mondialrelayhomedelivery.bo.default'}
+                        </div>
+
+                        <div class="panel-body">
+                            {form name="mondialrelayhomedelivery.area_attributes_update_form"}
+                                <form action="{url path="/admin/module/MondialRelayHomeDelivery/area-attributes/save/$ID/$module_id"}" data-ajax-target="#prices-form-container" {form_enctype form=$form} method="post">
+                                    {form_hidden_fields form=$form}
+
+                                    {loop type="mondialrelayhomedelivery.area-attributes" name="area-attributes" area_id=$ID}
+                                        {custom_render_form_field field="delivery_time"}
+                                            <div class="input-group">
+                                                <input type="text" {form_field_attributes field="delivery_time" value=$DELIVERY_TIME}>
+                                                <span class="input-group-addon">{intl l='days' d='mondialrelayhomedelivery.bo.default'}</span>
+                                            </div>
+                                        {/custom_render_form_field}
+
+                                        <button type="submit" class="btn btn-primary" title="{intl l='Save changes' d='mondialrelayhomedelivery.bo.default'}"><i class="glyphicon glyphicon-ok"></i> {intl l="Save" d='mondialrelayhomedelivery.bo.default'}</button>
+                                    {/loop}
+                                </form>
+                            {/form}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {intl l='Free Shipping Area' d='mondialrelayhomedelivery.bo.default'}
+                        </div>
+                        <div class="panel-body">
+                            <!-- ********* FREE SHIPPING BUTTON ********* -->
+
+                            <div id="area-freeshipping-{$ID}" {if $isMondialRelayHomeDeliveryFreeshipping eq 1}  style="display:none;" {/if}>
+                                <form action="{url path="/admin/module/MondialRelayHomeDelivery/area_freeshipping"}"  method="post">
+                                    <div class="input-group">
+                                        <span class="input-group-addon {if $ID }alert-success{/if}">{intl l="Activate free shipping from (€) :" d="mondialrelayhomedelivery.bo.default"}</span>
+                                        <input type="hidden" name="area-id" value="{$ID}">
+                                        <input type="hidden" name="delivery-mode" value="{$deliveryModeId|default:null}">
+
+                                        {ifloop rel="area_freeshipping"}
+                                        {loop type="mondialrelayhomedelivery.area.freeshipping" name="area_freeshipping" area_id=$ID}
+                                            <input type="number" step="0.01" name="cart-amount" class="form-control" value="{$CART_AMOUNT}">
+                                        {/loop}
+                                        {/ifloop}
+                                        {elseloop rel="area_freeshipping"}
+                                            <input type="number" step="0.01" name="cart-amount" class="form-control" value="">
+                                        {/elseloop}
+
+                                        <span class="input-group-btn">
+                                           <button class="btn btn-default" type="submit">{intl l="Save"}</button>
+                                       </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-        </div>
-        </div>
-    </div>
-    {/loop}
-{/ifloop}
+            {/loop}
+        {/ifloop}
 
 {elseloop rel="module-areas"}
     <div class="alert alert-warning">
