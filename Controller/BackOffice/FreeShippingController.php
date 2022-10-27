@@ -24,6 +24,7 @@
 namespace MondialRelayHomeDelivery\Controller\BackOffice;
 
 use MondialRelayHomeDelivery\Form\FreeShippingForm;
+use MondialRelayHomeDelivery\Model\MondialRelayHomeDeliveryAreaFreeshippingQuery;
 use MondialRelayHomeDelivery\Model\MondialRelayHomeDeliveryFreeshipping;
 use MondialRelayHomeDelivery\Model\MondialRelayHomeDeliveryFreeshippingQuery;
 use MondialRelayHomeDelivery\MondialRelayHomeDelivery;
@@ -72,5 +73,46 @@ class FreeShippingController extends BaseAdminController
             $response = JsonResponse::create(array('error' => $e->getMessage()), 500);
         }
         return $response;
+    }
+
+    /**
+     * @return mixed|Response|null
+     */
+    public function setAreaFreeShipping()
+    {
+        if (null !== $response = $this
+                ->checkAuth(array(AdminResources::MODULE), array('MondialRelayHomeDelivery'), AccessManager::UPDATE)) {
+            return $response;
+        }
+
+        try {
+            $data = $this->getRequest()->request;
+
+            $mondial_relay_home_delivery_area_id = $data->get('area-id');
+
+            $cartAmount = $data->get('cart-amount');
+
+            if ($cartAmount < 0 || $cartAmount === '') {
+                $cartAmount = null;
+            }
+
+            $areaQuery = AreaQuery::create()->findOneById($mondial_relay_home_delivery_area_id);
+            if (null === $areaQuery) {
+                return null;
+            }
+
+            $mondialRelayHomeDeliveryAreaFreeshipping = MondialRelayHomeDeliveryAreaFreeshippingQuery::create()
+                ->filterByAreaId($mondial_relay_home_delivery_area_id)
+                ->findOneOrCreate();
+
+            $mondialRelayHomeDeliveryAreaFreeshipping
+                ->setAreaId($mondial_relay_home_delivery_area_id)
+                ->setCartAmount($cartAmount)
+                ->save();
+
+        } catch (\Exception $e) {
+        }
+
+        return $this->generateRedirect(URL::getInstance()->absoluteUrl('/admin/module/MondialRelayHomeDelivery'));
     }
 }
