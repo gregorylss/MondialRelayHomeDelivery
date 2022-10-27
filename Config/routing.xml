@@ -55,4 +55,9 @@
         <requirement key="insuranceId">\d+</requirement>
     </route>
 
+    <!-- Price Slices -->
+
+    <route id="mondial_relay_home_delivery.toggle.freeshipping" path="/admin/module/MondialRelayHomeDelivery/freeshipping" methods="post">
+        <default key="_controller">MondialRelayHomeDelivery\Controller\BackOffice\FreeShippingController::toggleFreeShippingActivation</default>
+    </route>
 </routes>

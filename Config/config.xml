@@ -11,6 +11,7 @@
 
         <loop name="mondialrelayhomedelivery.delivery-price" class="MondialRelayHomeDelivery\Loop\DeliveryPrice" />
         <loop name="mondialrelayhomedelivery.pickup-points" class="MondialRelayHomeDelivery\Loop\PickupPoints" />
+        <loop name="mondialrelayhomedelivery.freeshipping" class="MondialRelayHomeDelivery\Loop\FreeShipping"/>
     </loops>
 
     <forms>
@@ -23,6 +24,7 @@
 
         <form name="mondialrelayhomedelivery.insurances_update_form" class="MondialRelayHomeDelivery\Form\InsurancesUpdateForm" />
         <form name="mondialrelayhomedelivery.insurance_create_form" class="MondialRelayHomeDelivery\Form\InsuranceCreateForm" />
+        <form name="mondialrelayhomedelivery_freeshipping_form" class="MondialRelayHomeDelivery\Form\FreeShippingForm"/>
     </forms>
 
     <hooks>

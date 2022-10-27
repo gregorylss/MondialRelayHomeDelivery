@@ -5,7 +5,7 @@
             {intl l="Mondial Relay delivery configuration" d='mondialrelayhomedelivery.bo.default'}
         </div>
     </div>
-    
+
     <ul class="nav nav-tabs clearfix">
         <li {if $current_tab|default:null == 'general'}class="active"{/if}><a href="#general" data-tab-name="general" data-toggle="tab">{intl l="Configuration" d='mondialrelayhomedelivery.bo.default'}</a></li>
         <li {if $current_tab|default:null == 'prices'}class="active"{/if}><a href="#prices" data-tab-name="prices" data-toggle="tab">{intl l="Prices" d='mondialrelayhomedelivery.bo.default'}</a></li>
@@ -13,20 +13,54 @@
         <li {if $current_tab == 'insurances'}class="active"{/if}><a href="#insurances" data-tab-name="insurances" data-toggle="tab">{intl l="Insurances" d='mondialrelayhomedelivery.bo.default'}</a></li>
         *}
     </ul>
-    
+
     <div class="tab-content">
         <div class="tab-pane fade {if $current_tab|default:null == 'general'}active in{/if}" id="general">
             <div class="form-container" id="general-form-container">
                 {include file="mondialrelayhomedelivery/ajax/general.html"}
             </div>
         </div>
-        
+
         <div class="tab-pane fade {if $current_tab|default:null == 'prices'}active in{/if}" id="prices">
+            <!-- ********* FREE SHIPPING BUTTON ********* -->
+
+            <div class="row">
+                <!-- checkbox free shipping -->
+                {assign var="isMondialRelayHomeDeliveryFreeshipping" value=0}
+                {form  name="mondialrelayhomedelivery_freeshipping_form"}
+                    <form action='{url path="/admin/module/MondialRelayHomeDelivery/freeshipping"}' method="post" id="freeshippingform">
+                        <div class="col-md-4">
+                            {form_hidden_fields form=$form}
+                            {form_field form=$form field="freeshipping"}
+                                <label>
+                                    {intl l="Activate total free shipping " d="mondialrelayhomedelivery.bo.default"}
+                                </label>
+                                <div class="switch-small freeshipping-activation-MondialRelayHomeDelivery" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok-circle'></i>" data-off-label="<i class='glyphicon glyphicon-remove-circle'></i>">
+                                    <input type="checkbox" name="{$name}" value="{$mondial_relay_home_delivery_free_shipping_active}" {if $mondial_relay_home_delivery_free_shipping_active}checked{assign var="isMondialRelayHomeDeliveryFreeshipping" value=1}{/if}
+                                    />
+                                </div>
+                            {/form_field}
+                        </div>
+                        <div class="col-md-6" id="freeshipping-from">
+                            <div class="input-group">
+                                {form_field form=$form field="freeshipping_from"}
+                                    <span class="input-group-addon {if $value}alert-success{/if}">{intl l="Or activate free shipping from (€) :" d="mondialrelayhomedelivery.bo.default"}</span>
+                                    <input type="number" name="{$name}"  class="form-control" value="{$value}" step="0.01">
+
+                                {/form_field}
+                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="submit">{intl l="Save"}</button>
+                                                </span>
+                            </div>
+                        </div>
+                    </form>
+                {/form}
+            </div>
             <div class="form-container" id="prices-form-container">
                 {include file="mondialrelayhomedelivery/ajax/prices.html" module_id=$module_id}
             </div>
         </div>
-        
+
         {*
         <div class="tab-pane fade {if $current_tab == 'insurances'}active in{/if}" id="insurances">
             <div class="form-container" id="insurances-form-container">
@@ -34,5 +68,6 @@
             </div>
         </div>
         *}
+        </div>
     </div>
 </div>
