@@ -13,7 +13,7 @@
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <author>
         <name>Franck Allimant</name>
         <company>CQFDev</company>
@@ -21,6 +21,6 @@
         <website>www.cqfdev.fr</website>
     </author>
     <type>delivery</type>
-    <thelia>2.3.0</thelia>
+    <thelia>2.5.0</thelia>
     <stability>prod</stability>
 </module>

@@ -9,6 +9,7 @@
     <ul class="nav nav-tabs clearfix">
         <li {if $current_tab|default:null == 'general'}class="active"{/if}><a href="#general" data-tab-name="general" data-toggle="tab">{intl l="Configuration" d='mondialrelayhomedelivery.bo.default'}</a></li>
         <li {if $current_tab|default:null == 'prices'}class="active"{/if}><a href="#prices" data-tab-name="prices" data-toggle="tab">{intl l="Prices" d='mondialrelayhomedelivery.bo.default'}</a></li>
+        <li {if $current_tab|default:null == 'tax_rule'}class="active"{/if}><a href="#tax_rule" data-tab-name="tax_rule" data-toggle="tab">{intl l="Tax Rules" d='mondialrelayhomedelivery.bo.default'}</a></li>
         {*
         <li {if $current_tab == 'insurances'}class="active"{/if}><a href="#insurances" data-tab-name="insurances" data-toggle="tab">{intl l="Insurances" d='mondialrelayhomedelivery.bo.default'}</a></li>
         *}
@@ -61,6 +62,25 @@
             </div>
         </div>
 
+        <div class="tab-pane fade {if $current_tab|default:null == 'tax_rule'}active in{/if}" id="tax_rule">
+            <br>
+            <div class="title">
+                {intl l="Mondial Relay Home Delivery Tax Rule Configuration" d='mondialrelayhomedelivery.bo.default'}
+            </div>
+
+            {form name="mondialrelayhomedelivery_form_tax_rule_form"}
+                <form action="{url path="/admin/module/MondialRelayHomeDelivery/tax_rule/save"}" method="post" >
+                    {form_hidden_fields}
+
+                    {render_form_field field='tax_rule_id'}
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">{intl l="Save"}</button>
+                    </span>
+                </form>
+            {/form}
+        </div>
+
         {*
         <div class="tab-pane fade {if $current_tab == 'insurances'}active in{/if}" id="insurances">
             <div class="form-container" id="insurances-form-container">
@@ -68,6 +88,5 @@
             </div>
         </div>
         *}
-        </div>
     </div>
 </div>
