@@ -21,7 +21,6 @@ use Thelia\Install\Database;
 use Thelia\Model\Area;
 use Thelia\Model\AreaDeliveryModule;
 use Thelia\Model\AreaQuery;
-use Thelia\Model\ConfigQuery;
 use Thelia\Model\Country;
 use Thelia\Model\CountryArea;
 use Thelia\Model\CountryQuery;
@@ -32,12 +31,11 @@ use Thelia\Model\Message;
 use Thelia\Model\MessageQuery;
 use Thelia\Model\ModuleImageQuery;
 use Thelia\Model\OrderPostage;
-use Thelia\Model\TaxRuleQuery;
-use Thelia\Module\AbstractDeliveryModule;
+use Thelia\Model\State;
+use Thelia\Module\AbstractDeliveryModuleWithState;
 use Thelia\Module\Exception\DeliveryException;
-use Thelia\TaxEngine\Calculator;
 
-class MondialRelayHomeDelivery extends AbstractDeliveryModule
+class MondialRelayHomeDelivery extends AbstractDeliveryModuleWithState
 {
     /** @var string */
     const DOMAIN_NAME = 'mondialrelayhomedelivery';
@@ -53,6 +51,8 @@ class MondialRelayHomeDelivery extends AbstractDeliveryModule
     const ALLOW_INSURANCE  = 'allow_insurance';
 
     const TRACKING_MESSAGE_NAME = 'mondial-relay-home-delivery-tracking-message';
+
+    const MONDIAL_RELAY_HOME_DELIVERY_TAX_RULE_ID = 'mondial_relay_home_delivery_tax_rule_id';
 
     const MAX_WEIGHT_KG = 30;
     const MIN_WEIGHT_KG = 0.1;
@@ -215,11 +215,12 @@ class MondialRelayHomeDelivery extends AbstractDeliveryModule
      * If you return true, the delivery method will de displayed to the customer
      * If you return false, the delivery method will not be displayed
      *
-     * @param Country $country the country to deliver to.
      *
+     * @param Country $country
+     * @param State|null $state
      * @return boolean
      */
-    public function isValidDelivery(Country $country)
+    public function isValidDelivery(Country $country, State $state = null)
     {
         return !empty($this->getAreaForCountry($country)->getData());
     }
@@ -227,26 +228,27 @@ class MondialRelayHomeDelivery extends AbstractDeliveryModule
     /**
      * Calculate and return delivery price in the shop's default currency
      *
-     * @param Country $country the country to deliver to.
      *
+     * @param Country $country
+     * @param State|null $state
      * @return OrderPostage|float             the delivery price
      * @throws DeliveryException if the postage price cannot be calculated.
      */
-    public function getPostage(Country $country)
+    public function getPostage(Country $country, State $state = null)
     {
         $request = $this->getRequest();
 
         $cartWeight = $request->getSession()->getSessionCart($this->getDispatcher())->getWeight();
         $cartAmount = $request->getSession()->getSessionCart($this->getDispatcher())->getTaxedAmount($country, false);
 
-        if (null === $orderPostage = $this->getMinPostage($country, $request->getSession()->getLang()->getLocale(), $cartWeight)) {
+        if (null === $orderPostage = $this->getMinPostage($country, $request->getSession()->getLang()->getLocale(), $cartWeight, $cartAmount)) {
             throw new DeliveryException('Mondial Relay unavailable for your cart weight or delivery country');
         }
 
         return $orderPostage;
     }
 
-    public function getAreaForCountry(Country $country)
+    public function getAreaForCountry(Country $country, State $state = null)
     {
         return AreaQuery::create()
             ->useAreaDeliveryModuleQuery()
@@ -382,27 +384,6 @@ class MondialRelayHomeDelivery extends AbstractDeliveryModule
             throw new DeliveryException('Mondial Relay delivery unavailable for your cart weight or delivery country');
         }
 
-        return $this->buildOrderPostage($minPostage, $country, $locale);
+        return $this->buildOrderPostage($minPostage, $country, $locale, self::getConfigValue(self::MONDIAL_RELAY_HOME_DELIVERY_TAX_RULE_ID));
     }
-
-    public function buildOrderPostage($postage, $country, $locale, $taxRuleId = null)
-    {
-        $taxRuleQuery = TaxRuleQuery::create();
-        $taxRuleId = ($taxRuleId) ?: ConfigQuery::read('taxrule_id_delivery_module');
-        if ($taxRuleId) {
-            $taxRuleQuery->filterById($taxRuleId);
-        }
-        $taxRule = $taxRuleQuery->orderByIsDefault(Criteria::DESC)->findOne();
-
-        $orderPostage = new OrderPostage();
-        $taxCalculator = new Calculator();
-        $taxCalculator->loadTaxRuleWithoutProduct($taxRule, $country);
-
-        $orderPostage->setAmount((float)$postage);
-        $orderPostage->setAmountTax($taxCalculator->getTaxAmountFromTaxedPrice($postage));
-        $orderPostage->setTaxRuleTitle($taxRule->setLocale($locale)->getTitle());
-
-        return $orderPostage;
-    }
-
 }
